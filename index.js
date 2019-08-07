@@ -14,17 +14,42 @@
 //  }
 //  reactFunction(101,10);
 
+// callback and error handling
+
+// const http = require('http');
+// const hostname = 'localhost';
+// const port = '3000';
+
+// const server = http.createServer((req, res) =>{
+//     console.log(req.headers);
+
+//     res.statusCode = 200;
+//     res.setHeader('Content-Type', 'text/html');
+//     res.end('<html><body><h1>hello nodeJS</h1></body></html>');
+// })
+// server.listen(port, hostname, () => {
+//     console.log(`server is running on http://${hostname}:${port}`);
+// });
+
+//express framework
+const express = require('express');
+const morgan = require('morgan');
 const http = require('http');
 const hostname = 'localhost';
 const port = '3000';
+const app = express();
+app.use(morgan('dev'));
+app.use(express.static(__dirname + '/public'));
 
-const server = http.createServer((req, res) =>{
+app.use((req, res, next) => {
     console.log(req.headers);
 
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/html');
     res.end('<html><body><h1>hello nodeJS</h1></body></html>');
-})
-server.listen(port, hostname, () => {
-    console.log(`server is running on http://${hostname}:${port}`);
+});
+
+const server = http.createServer(app);
+server.listen(port, hostname, () =>{
+    console.log(`server is running on port ${port} and URL will be http://${hostname}:${port}` )
 });
